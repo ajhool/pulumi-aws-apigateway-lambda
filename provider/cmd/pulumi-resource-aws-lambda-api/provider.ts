@@ -16,7 +16,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as provider from "@pulumi/pulumi/provider";
 
 import { LambdaApi, LambdaApiArgs } from "./lib/apiLambda";
-
 export class Provider implements provider.Provider {
     constructor(readonly version: string) { }
 
@@ -27,6 +26,7 @@ export class Provider implements provider.Provider {
         switch (type) {
             case "lambdaapi:index:LambdaApi":
                 return await constructLambdaApi(name, inputs, options);
+            
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
