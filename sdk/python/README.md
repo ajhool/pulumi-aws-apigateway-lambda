@@ -27,19 +27,14 @@ If creating a provider for distribution to other users, they will need `pulumi-r
 
 ```bash
 # Build and install the provider
-make install_provider
+make install_provider && make generate &&  export PATH=$PATH:$PWD/bin && make install_nodejs_sdk && cd examples/simple && yarn install && yarn link @pulumi/awslambdaapi
 
-# Regenerate SDKs
-make generate
 
 # Ensure the pulumi-provider-xyz script is on PATH
-$ export PATH=$PATH:$PWD/bin
+$
 
 # Test Node.js SDK
-$ make install_nodejs_sdk
-$ cd examples/simple
-$ yarn install
-$ yarn link @pulumi/xyz
+$ 
 $ pulumi stack init test
 $ pulumi config set aws:region us-east-1
 $ pulumi up

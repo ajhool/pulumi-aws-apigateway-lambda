@@ -73,7 +73,7 @@ export class LambdaApi extends pulumi.ComponentResource {
         this.restApi = new aws.apigateway.RestApi(`${name}-api`, {
             // Uncomment to pass in a lambda handler instead of the arn
             // body: args.handler.arn.apply(lambdaArn => swaggerSpec(lambdaArn)),
-            body: args.handlerArn
+            // body: swaggerSpec(args.handlerArn.apply(arn => arn))
             // ...args.api
         });
 

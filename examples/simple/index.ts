@@ -44,7 +44,7 @@ const lambda = new aws.lambda.Function(`${NAMESPACE}-lambda`, {
 
 const cronLambda = new lambdaapi.CronLambda("cron-lambda", {
     handlerArn: lambda.arn,
-    rateInMinutes: 1
+    rateInMinutes: 2
 });
 
 export const eventRule = cronLambda.eventRule;
@@ -54,6 +54,15 @@ export const eventTarget = cronLambda.eventTarget
  * Cloudwatch + S3 Bucket
  **********************************/
 
-const cloudfrontS3 = new CloudfrontS3(`${NAMESPACE}-lambda-api`, {
-    bucketName: 'pulumi-multilang-cloudfronts3-2021-06-03'
+// const cloudfrontS3 = new CloudfrontS3(`${NAMESPACE}-lambda-api`, {
+//     bucketName: 'pulumi-multilang-cloudfronts3-2021-06-03'
+// })
+
+
+/**********************************
+ * Lambda-backed REST endpoint
+ ***********************************/
+
+const lambdaBackedApi = new lambdaapi.LambdaApi('lambda-api', {
+    handlerArn: lambda.arn
 })

@@ -32,11 +32,20 @@ export class CronLambda extends pulumi.ComponentResource {
     // public readonly executeLambdaPermission: aws.lambda.Permission;
 
     constructor(name: string, args: CronLambdaArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("CloudfrontS3:index:CloudfrontS3", name, args, opts);
+        super("awslambdaapi:index:CronLambda", name, args, opts);
+
+        
+        // Pluralize "minute" if rateInMinutes is greater than 1
+        const minutes = (1 === args.rateInMinutes) ? `minute` : 'minutes';
+
+        console.log(`Schedule rate: rate(${args.rateInMinutes} ${minutes})`, )
+
 
         this.eventRule = new aws.cloudwatch.EventRule(`${name}-cron-rule`, {
           description: `Scheduled lambda for ${name}`,
-          scheduleExpression: `${args.rateInMinutes} minutes`
+          // scheduleExpression: `rate(${args.rateInMinutes} ${minutes})`
+          scheduleExpression: `rate(5 minutes)`,
+          // scheduleExpression: `cron(0 20 * * ? *)
         })
 
         // Create the S3 bucket to hold content

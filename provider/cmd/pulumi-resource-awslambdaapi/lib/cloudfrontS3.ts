@@ -44,7 +44,7 @@ export class CloudfrontS3 extends pulumi.ComponentResource {
     public readonly domainName: pulumi.Output<string>;
 
     constructor(name: string, args: CloudfrontS3Args, opts?: pulumi.ComponentResourceOptions) {
-        super("CloudfrontS3:index:CloudfrontS3", name, args, opts);
+        super("awslambdaapi:index:CloudfrontS3", name, args, opts);
 
         // Create the S3 bucket to hold content
         this.bucket = new aws.s3.Bucket(`${name}-bucket`, {
@@ -112,25 +112,23 @@ export class CloudfrontS3 extends pulumi.ComponentResource {
           ]
         });
 
-
-        // @fixme - the policy prinicpal might not be correct. There's some funny business w.r.t s3CanonincalUserId
+        // @fixme - the policy principal might not be correct. There's some funny business w.r.t s3CanonincalUserId
         this.bucketPolicy = new aws.s3.BucketPolicy(`${name}-bucketPolicy`, {
+          policy: {
+            Version: "2012-10-17",
+            Id: "PolicyForCloudFrontPrivateContent",
+            Statement: [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": this.originAccessIdentity.s3CanonicalUserId
+                    },
+                    "Action": "s3:GetObject",
+                    "Resource": this.bucket.arn
+                }
+            ]
+          },
           bucket: args.bucketName,
-          policy: 
-            `{
-              "Version": "2012-10-17",
-              "Id": "PolicyForCloudFrontPrivateContent",
-              "Statement": [
-                  {
-                      "Effect": "Allow",
-                      "Principal": {
-                          "AWS": ${this.originAccessIdentity.s3CanonicalUserId}
-                      },
-                      "Action": "s3:GetObject",
-                      "Resource": ${this.bucket.arn}
-                  }
-              ]
-          }`
         })
 
         this.domainName = this.cloudfrontWebDistribution.domainName;
