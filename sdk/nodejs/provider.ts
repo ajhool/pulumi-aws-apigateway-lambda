@@ -6,7 +6,7 @@ import * as utilities from "./utilities";
 
 export class Provider extends pulumi.ProviderResource {
     /** @internal */
-    public static readonly __pulumiType = 'lambdaapi';
+    public static readonly __pulumiType = 'awslambdaapi';
 
     /**
      * Returns true if the given object is an instance of Provider.  This is designed to work even

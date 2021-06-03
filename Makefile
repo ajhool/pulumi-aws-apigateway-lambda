@@ -1,6 +1,6 @@
 VERSION         := 0.0.1
 
-PACK            := aws-lambda-api
+PACK            := awslambdaapi
 PROJECT         := github.com/pulumi/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}

@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Lambdaapi
+namespace Pulumi.Awslambdaapi
 {
-    [LambdaapiResourceType("pulumi:providers:lambdaapi")]
+    [AwslambdaapiResourceType("pulumi:providers:awslambdaapi")]
     public partial class Provider : Pulumi.ProviderResource
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace Pulumi.Lambdaapi
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
-            : base("lambdaapi", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
+            : base("awslambdaapi", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
 

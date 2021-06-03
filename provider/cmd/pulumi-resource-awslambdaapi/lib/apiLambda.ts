@@ -14,7 +14,7 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-// 
+//
 const STAGE_NAME = 'api';
 
 export interface LambdaApiArgs {
@@ -68,7 +68,7 @@ export class LambdaApi extends pulumi.ComponentResource {
     public readonly endpoint: pulumi.Output<string>
 
     constructor(name: string, args: LambdaApiArgs, opts?: pulumi.ComponentResourceOptions) {
-        super("lambdaapi:index:LambdaApi", name, args, opts);
+        super("awslambdaapi:index:LambdaApi", name, args, opts);
 
         this.restApi = new aws.apigateway.RestApi(`${name}-api`, {
             // Uncomment to pass in a lambda handler instead of the arn
