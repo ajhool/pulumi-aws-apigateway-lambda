@@ -26,11 +26,11 @@ export class Provider implements provider.Provider {
 
         // TODO: Add support for additional component resources here.
         switch (type) {
-            case "lambdaapi:index:LambdaApi":
+            case "awslambdaapi:index:LambdaApi":
                 return await constructLambdaApi(name, inputs, options);
-            case "lambdaapi:index:CronLambda":
+            case "awslambdaapi:index:CronLambda":
                 return await constructCronLambda(name, inputs, options);
-            case "lambdaapi:index:CloudfrontS3":
+            case "awslambdaapi:index:CloudfrontS3":
                 return await constructCloudfrontS3(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);

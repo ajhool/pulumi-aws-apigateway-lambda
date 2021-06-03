@@ -14,39 +14,24 @@ __all__ = ['LambdaApiArgs', 'LambdaApi']
 @pulumi.input_type
 class LambdaApiArgs:
     def __init__(__self__, *,
-                 bucket_name: pulumi.Input[str],
-                 distribution: pulumi.Input['pulumi_aws.s3.Bucket']):
+                 lambda_arn: pulumi.Input[str]):
         """
         The set of arguments for constructing a LambdaApi resource.
-        :param pulumi.Input[str] bucket_name: The name of the S3 bucket
-        :param pulumi.Input['pulumi_aws.s3.Bucket'] distribution: Cloudfront args
+        :param pulumi.Input[str] lambda_arn: The arn of the lambda function
         """
-        pulumi.set(__self__, "bucket_name", bucket_name)
-        pulumi.set(__self__, "distribution", distribution)
+        pulumi.set(__self__, "lambda_arn", lambda_arn)
 
     @property
-    @pulumi.getter(name="bucketName")
-    def bucket_name(self) -> pulumi.Input[str]:
+    @pulumi.getter(name="lambdaArn")
+    def lambda_arn(self) -> pulumi.Input[str]:
         """
-        The name of the S3 bucket
+        The arn of the lambda function
         """
-        return pulumi.get(self, "bucket_name")
+        return pulumi.get(self, "lambda_arn")
 
-    @bucket_name.setter
-    def bucket_name(self, value: pulumi.Input[str]):
-        pulumi.set(self, "bucket_name", value)
-
-    @property
-    @pulumi.getter
-    def distribution(self) -> pulumi.Input['pulumi_aws.s3.Bucket']:
-        """
-        Cloudfront args
-        """
-        return pulumi.get(self, "distribution")
-
-    @distribution.setter
-    def distribution(self, value: pulumi.Input['pulumi_aws.s3.Bucket']):
-        pulumi.set(self, "distribution", value)
+    @lambda_arn.setter
+    def lambda_arn(self, value: pulumi.Input[str]):
+        pulumi.set(self, "lambda_arn", value)
 
 
 class LambdaApi(pulumi.ComponentResource):
@@ -54,15 +39,13 @@ class LambdaApi(pulumi.ComponentResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 bucket_name: Optional[pulumi.Input[str]] = None,
-                 distribution: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
+                 lambda_arn: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         Create a LambdaApi resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] bucket_name: The name of the S3 bucket
-        :param pulumi.Input['pulumi_aws.s3.Bucket'] distribution: Cloudfront args
+        :param pulumi.Input[str] lambda_arn: The arn of the lambda function
         """
         ...
     @overload
@@ -87,8 +70,7 @@ class LambdaApi(pulumi.ComponentResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 bucket_name: Optional[pulumi.Input[str]] = None,
-                 distribution: Optional[pulumi.Input['pulumi_aws.s3.Bucket']] = None,
+                 lambda_arn: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
@@ -103,14 +85,10 @@ class LambdaApi(pulumi.ComponentResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = LambdaApiArgs.__new__(LambdaApiArgs)
 
-            if bucket_name is None and not opts.urn:
-                raise TypeError("Missing required property 'bucket_name'")
-            __props__.__dict__["bucket_name"] = bucket_name
-            if distribution is None and not opts.urn:
-                raise TypeError("Missing required property 'distribution'")
-            __props__.__dict__["distribution"] = distribution
+            if lambda_arn is None and not opts.urn:
+                raise TypeError("Missing required property 'lambda_arn'")
+            __props__.__dict__["lambda_arn"] = lambda_arn
             __props__.__dict__["bucket"] = None
-            __props__.__dict__["website_url"] = None
         super(LambdaApi, __self__).__init__(
             'awslambdaapi:index:LambdaApi',
             resource_name,
@@ -125,12 +103,4 @@ class LambdaApi(pulumi.ComponentResource):
         The bucket resource.
         """
         return pulumi.get(self, "bucket")
-
-    @property
-    @pulumi.getter(name="websiteUrl")
-    def website_url(self) -> pulumi.Output[str]:
-        """
-        The website URL.
-        """
-        return pulumi.get(self, "website_url")
 

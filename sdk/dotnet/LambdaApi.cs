@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Lambdaapi
+namespace Pulumi.Awslambdaapi
 {
-    [LambdaapiResourceType("awslambdaapi:index:LambdaApi")]
+    [AwslambdaapiResourceType("awslambdaapi:index:LambdaApi")]
     public partial class LambdaApi : Pulumi.ComponentResource
     {
         /// <summary>
@@ -17,12 +17,6 @@ namespace Pulumi.Lambdaapi
         /// </summary>
         [Output("bucket")]
         public Output<Pulumi.Aws.S3.Bucket> Bucket { get; private set; } = null!;
-
-        /// <summary>
-        /// The website URL.
-        /// </summary>
-        [Output("websiteUrl")]
-        public Output<string> WebsiteUrl { get; private set; } = null!;
 
 
         /// <summary>
@@ -53,16 +47,10 @@ namespace Pulumi.Lambdaapi
     public sealed class LambdaApiArgs : Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The name of the S3 bucket
+        /// The arn of the lambda function
         /// </summary>
-        [Input("bucketName", required: true)]
-        public Input<string> BucketName { get; set; } = null!;
-
-        /// <summary>
-        /// Cloudfront args
-        /// </summary>
-        [Input("distribution", required: true)]
-        public Input<Pulumi.Aws.S3.Bucket> Distribution { get; set; } = null!;
+        [Input("lambdaArn", required: true)]
+        public Input<string> LambdaArn { get; set; } = null!;
 
         public LambdaApiArgs()
         {

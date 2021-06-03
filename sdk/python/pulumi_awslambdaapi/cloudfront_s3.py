@@ -87,10 +87,19 @@ class CloudfrontS3(pulumi.ComponentResource):
             if bucket_name is None and not opts.urn:
                 raise TypeError("Missing required property 'bucket_name'")
             __props__.__dict__["bucket_name"] = bucket_name
+            __props__.__dict__["domain_name"] = None
         super(CloudfrontS3, __self__).__init__(
             'awslambdaapi:index:CloudfrontS3',
             resource_name,
             __props__,
             opts,
             remote=True)
+
+    @property
+    @pulumi.getter(name="domainName")
+    def domain_name(self) -> pulumi.Output[str]:
+        """
+        Cloudfront URL
+        """
+        return pulumi.get(self, "domain_name")
 

@@ -31,7 +31,7 @@ def _register_module():
 
 
     _module_instance = Module()
-    pulumi.runtime.register_resource_module("lambdaapi", "index", _module_instance)
+    pulumi.runtime.register_resource_module("awslambdaapi", "index", _module_instance)
 
 
     class Package(pulumi.runtime.ResourcePackage):
@@ -41,11 +41,11 @@ def _register_module():
             return Package._version
 
         def construct_provider(self, name: str, typ: str, urn: str) -> pulumi.ProviderResource:
-            if typ != "pulumi:providers:lambdaapi":
+            if typ != "pulumi:providers:awslambdaapi":
                 raise Exception(f"unknown provider type {typ}")
             return Provider(name, pulumi.ResourceOptions(urn=urn))
 
 
-    pulumi.runtime.register_resource_package("lambdaapi", Package())
+    pulumi.runtime.register_resource_package("awslambdaapi", Package())
 
 _register_module()

@@ -7,9 +7,9 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Lambdaapi
+namespace Pulumi.Awslambdaapi
 {
-    [LambdaapiResourceType("awslambdaapi:index:CronLambda")]
+    [AwslambdaapiResourceType("awslambdaapi:index:CronLambda")]
     public partial class CronLambda : Pulumi.ComponentResource
     {
         /// <summary>

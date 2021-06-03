@@ -1,7 +1,7 @@
-import * as lambdaapi from "@pulumi/lambdaapi";
+import * as lambdaapi from "@pulumi/awslambdaapi";
 import * as aws from "@pulumi/aws";
 import * as pulumi from '@pulumi/pulumi';
-import { CloudfrontS3, LambdaApi } from "@pulumi/lambdaapi";
+import { CloudfrontS3, LambdaApi } from "@pulumi/awslambdaapi";
 
 const NAMESPACE = `examples-simple`;
 

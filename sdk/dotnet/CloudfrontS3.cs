@@ -7,11 +7,18 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Lambdaapi
+namespace Pulumi.Awslambdaapi
 {
-    [LambdaapiResourceType("awslambdaapi:index:CloudfrontS3")]
+    [AwslambdaapiResourceType("awslambdaapi:index:CloudfrontS3")]
     public partial class CloudfrontS3 : Pulumi.ComponentResource
     {
+        /// <summary>
+        /// Cloudfront URL
+        /// </summary>
+        [Output("domainName")]
+        public Output<string> DomainName { get; private set; } = null!;
+
+
         /// <summary>
         /// Create a CloudfrontS3 resource with the given unique name, arguments, and options.
         /// </summary>

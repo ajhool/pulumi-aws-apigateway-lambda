@@ -12,15 +12,15 @@ class InstallPluginCommand(install):
     def run(self):
         install.run(self)
         try:
-            check_call(['pulumi', 'plugin', 'install', 'resource', 'lambdaapi', '${PLUGIN_VERSION}'])
+            check_call(['pulumi', 'plugin', 'install', 'resource', 'awslambdaapi', '${PLUGIN_VERSION}'])
         except OSError as error:
             if error.errno == errno.ENOENT:
                 print("""
-                There was an error installing the lambdaapi resource provider plugin.
+                There was an error installing the awslambdaapi resource provider plugin.
                 It looks like `pulumi` is not installed on your system.
                 Please visit https://pulumi.com/ to install the Pulumi CLI.
                 You may try manually installing the plugin by running
-                `pulumi plugin install resource lambdaapi ${PLUGIN_VERSION}`
+                `pulumi plugin install resource awslambdaapi ${PLUGIN_VERSION}`
                 """)
             else:
                 raise
@@ -31,7 +31,7 @@ def readme():
         return f.read()
 
 
-setup(name='pulumi_lambdaapi',
+setup(name='pulumi_awslambdaapi',
       version='${VERSION}',
       long_description=readme(),
       long_description_content_type='text/markdown',
@@ -40,7 +40,7 @@ setup(name='pulumi_lambdaapi',
       },
       packages=find_packages(),
       package_data={
-          'pulumi_lambdaapi': [
+          'pulumi_awslambdaapi': [
               'py.typed',
           ]
       },

@@ -1,5 +1,5 @@
 {
-    "name": "@pulumi/lambdaapi",
+    "name": "@pulumi/awslambdaapi",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"

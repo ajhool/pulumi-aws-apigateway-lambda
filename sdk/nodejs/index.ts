@@ -30,14 +30,14 @@ const _module = {
         }
     },
 };
-pulumi.runtime.registerResourceModule("lambdaapi", "index", _module)
+pulumi.runtime.registerResourceModule("awslambdaapi", "index", _module)
 
 import { Provider } from "./provider";
 
-pulumi.runtime.registerResourcePackage("lambdaapi", {
+pulumi.runtime.registerResourcePackage("awslambdaapi", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {
-        if (type !== "pulumi:providers:lambdaapi") {
+        if (type !== "pulumi:providers:awslambdaapi") {
             throw new Error(`unknown provider type ${type}`);
         }
         return new Provider(name, <any>undefined, { urn });

@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using Pulumi;
 
-namespace Pulumi.Lambdaapi
+namespace Pulumi.Awslambdaapi
 {
     static class Utilities
     {
@@ -66,7 +66,7 @@ namespace Pulumi.Lambdaapi
         static Utilities()
         {
             var assembly = typeof(Utilities).GetTypeInfo().Assembly;
-            using var stream = assembly.GetManifestResourceStream("Pulumi.Lambdaapi.version.txt");
+            using var stream = assembly.GetManifestResourceStream("Pulumi.Awslambdaapi.version.txt");
             using var reader = new StreamReader(stream ?? throw new NotSupportedException("Missing embedded version.txt file"));
             version = reader.ReadToEnd().Trim();
             var parts = version.Split("\n");
@@ -78,9 +78,9 @@ namespace Pulumi.Lambdaapi
         }
     }
 
-    internal sealed class LambdaapiResourceTypeAttribute : Pulumi.ResourceTypeAttribute
+    internal sealed class AwslambdaapiResourceTypeAttribute : Pulumi.ResourceTypeAttribute
     {
-        public LambdaapiResourceTypeAttribute(string type) : base(type, Utilities.Version)
+        public AwslambdaapiResourceTypeAttribute(string type) : base(type, Utilities.Version)
         {
         }
     }

@@ -1,5 +1,5 @@
 {
-    "name": "lambdaapi",
+    "name": "awslambdaapi",
     "resources": {
         "awslambdaapi:index:LambdaApi": {
             "isComponent": true,
@@ -69,7 +69,7 @@
                     "type": "string",
                     "description": "Cloudfront URL"
                 }
-            
+
             },
             "required": [
                 "domainName"
@@ -85,7 +85,7 @@
         },
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/ajhool/pulumi-aws-lambda-api/sdk/go/lambdaApi"
+            "importBasePath": "github.com/ajhool/pulumi-awslambdaapi/sdk/go/lambdaApi"
         },
         "nodejs": {
             "dependencies": {
