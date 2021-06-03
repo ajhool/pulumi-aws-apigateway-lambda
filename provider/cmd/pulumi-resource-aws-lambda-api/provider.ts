@@ -16,6 +16,8 @@ import * as pulumi from "@pulumi/pulumi";
 import * as provider from "@pulumi/pulumi/provider";
 
 import { LambdaApi, LambdaApiArgs } from "./lib/apiLambda";
+import { CloudfrontS3, CloudfrontS3Args } from "./lib/cloudfrontS3";
+import { CronLambda, CronLambdaArgs } from "./lib/cronLambda";
 export class Provider implements provider.Provider {
     constructor(readonly version: string) { }
 
@@ -26,7 +28,10 @@ export class Provider implements provider.Provider {
         switch (type) {
             case "lambdaapi:index:LambdaApi":
                 return await constructLambdaApi(name, inputs, options);
-            
+            case "lambdaapi:index:CronLambda":
+                return await constructCronLambda(name, inputs, options);
+            case "lambdaapi:index:CloudfrontS3":
+                return await constructCloudfrontS3(name, inputs, options);
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
@@ -49,6 +54,46 @@ async function constructLambdaApi(name: string, inputs: pulumi.Inputs,
             stage: lambdaApi.stage,
             restApi: lambdaApi.restApi,
             endpoint: lambdaApi.endpoint,
+        },
+    };
+}
+
+async function constructCronLambda(name: string, inputs: pulumi.Inputs,
+    options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
+
+    // Create the component resource.
+    const cronLambda = new CronLambda(name, inputs as CronLambdaArgs, options);
+
+    // Return the component resource's URN and outputs as its state.
+    return {
+        urn: cronLambda.urn,
+
+        // @fixme -- is this correct? What is state?
+        state: {
+            eventRule: cronLambda.eventRule,
+            eventTarget: cronLambda.eventTarget
+        },
+    };
+}
+
+async function constructCloudfrontS3(name: string, inputs: pulumi.Inputs,
+    options: pulumi.ComponentResourceOptions): Promise<provider.ConstructResult> {
+
+    // Create the component resource.
+    const cloudfrontS3 = new CloudfrontS3(name, inputs as CloudfrontS3Args, options);
+
+    // Return the component resource's URN and outputs as its state.
+    return {
+        urn: cloudfrontS3.urn,
+
+        // @fixme -- is this correct? What is state?
+        state: {
+            cloudfrontWebDistribution: cloudfrontS3.cloudfrontWebDistribution,
+            bucket: cloudfrontS3.bucket,
+            // s3LoggingBucket: aws.s3.Bucket;
+            originAccessIdentity: cloudfrontS3.originAccessIdentity,
+            bucketPolicy: cloudfrontS3.bucketPolicy,
+            domainName: cloudfrontS3.domainName
         },
     };
 }

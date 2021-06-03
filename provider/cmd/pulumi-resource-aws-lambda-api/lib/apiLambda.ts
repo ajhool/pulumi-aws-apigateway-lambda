@@ -14,19 +14,19 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import { RestApiArgs } from "@pulumi/aws/apigateway";
-
+// 
 const STAGE_NAME = 'api';
 
 export interface LambdaApiArgs {
     /**
-     * The HTML content for index.html.
+     * arn of the lambda handler
      */
-    handler: aws.lambda.Function;
+    handlerArn: pulumi.Input<string>
     /**
      * User props to override default api args
      */
-    api: RestApiArgs;
+    // Removed until a good way to pass all of these args into the schema
+    // api: RestApiArgs;
 }
 
 // Create the Swagger spec for a proxy which forwards all HTTP requests through to the Lambda function.
@@ -71,8 +71,10 @@ export class LambdaApi extends pulumi.ComponentResource {
         super("lambdaapi:index:LambdaApi", name, args, opts);
 
         this.restApi = new aws.apigateway.RestApi(`${name}-api`, {
-            body: args.handler.arn.apply(lambdaArn => swaggerSpec(lambdaArn)),
-            ...args.api
+            // Uncomment to pass in a lambda handler instead of the arn
+            // body: args.handler.arn.apply(lambdaArn => swaggerSpec(lambdaArn)),
+            body: args.handlerArn
+            // ...args.api
         });
 
         // Create a deployment of the Rest API.

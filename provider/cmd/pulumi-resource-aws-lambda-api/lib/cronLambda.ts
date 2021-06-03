@@ -16,9 +16,9 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 
 export interface CronLambdaArgs {
-    rateInMinutes: number;
-    eventPattern: string;
-    handler: aws.lambda.Function;
+    rateInMinutes: pulumi.Input<number>;
+    // handler: aws.lambda.Function;
+    handlerArn: pulumi.Input<string>
 }
 
 /**
@@ -29,7 +29,7 @@ export interface CronLambdaArgs {
 export class CronLambda extends pulumi.ComponentResource {
     public readonly eventRule: aws.cloudwatch.EventRule;
     public readonly eventTarget: aws.cloudwatch.EventTarget;
-    public readonly executeLambdaPermission: aws.lambda.Permission;
+    // public readonly executeLambdaPermission: aws.lambda.Permission;
 
     constructor(name: string, args: CronLambdaArgs, opts?: pulumi.ComponentResourceOptions) {
         super("CloudfrontS3:index:CloudfrontS3", name, args, opts);
@@ -43,7 +43,7 @@ export class CronLambda extends pulumi.ComponentResource {
         this.eventTarget = new aws.cloudwatch.EventTarget(`${name}-event-target`, {
           rule: this.eventRule.name,
           // @fixme - is a conversion needed from outputstring to inputstring?
-          arn: args.handler.arn
+          arn: args.handlerArn
         });
 
         //@fixme - iam permissions might be needed

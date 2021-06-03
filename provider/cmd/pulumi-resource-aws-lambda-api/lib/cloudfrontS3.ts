@@ -20,10 +20,11 @@ export interface CloudfrontS3Args {
     /**
      * Name for the S3 bucket. Must be globally unique.
      */
-    bucketName: string;
-    // @fixme - couldn't find an easy way to import only certain pieces of this DistributionArgs type.
-    //          wanted to provide a scoped down interfacec
-    distribution: DistributionArgs;
+    bucketName: pulumi.Input<string>;
+    // // @fixme - couldn't find an easy way to import only certain pieces of this DistributionArgs type.
+    // //          wanted to provide a scoped down interfacec
+    // distribution: pulumi.Input<DistributionArgs>;
+    // distribution: DistributionArgs
 }
 
 /**
@@ -35,11 +36,12 @@ export interface CloudfrontS3Args {
  */
 export class CloudfrontS3 extends pulumi.ComponentResource {
     public readonly cloudfrontWebDistribution: aws.cloudfront.Distribution;
-    public readonly cloudfrontLoggingBucket: aws.s3.Bucket;
+    // public readonly cloudfrontLoggingBucket: aws.s3.Bucket;
     public readonly bucket: aws.s3.Bucket;
-    public readonly s3LoggingBucket: aws.s3.Bucket;
+    // public readonly s3LoggingBucket: aws.s3.Bucket;
     public readonly originAccessIdentity: aws.cloudfront.OriginAccessIdentity;
     public readonly bucketPolicy: aws.s3.BucketPolicy;
+    public readonly domainName: pulumi.Output<string>;
 
     constructor(name: string, args: CloudfrontS3Args, opts?: pulumi.ComponentResourceOptions) {
         super("CloudfrontS3:index:CloudfrontS3", name, args, opts);
@@ -53,8 +55,51 @@ export class CloudfrontS3 extends pulumi.ComponentResource {
           comment: `${name} origin access identity for ${this.bucket.bucket}`
         })
 
+        // Arbitrary identifier for the main S3 Origin. Must be uniqe for this distribution.
+        const s3OriginId = `${name}`;
         this.cloudfrontWebDistribution = new aws.cloudfront.Distribution(`${name}-distribution`, {
-          ...args.distribution,
+            //@fixme - restrictions is required, which is suprising!
+            restrictions: {
+                geoRestriction: {
+                    restrictionType: "whitelist",
+                    locations: [
+                        "US",
+                        "CA",
+                        "GB",
+                        "DE",
+                    ],
+                },
+            },
+            defaultCacheBehavior: {
+              allowedMethods: [
+                  "DELETE",
+                  "GET",
+                  "HEAD",
+                  "OPTIONS",
+                  "PATCH",
+                  "POST",
+                  "PUT",
+              ],
+              cachedMethods: [
+                  "GET",
+                  "HEAD",
+              ],
+              targetOriginId: s3OriginId,
+              forwardedValues: {
+                  queryString: false,
+                  cookies: {
+                      forward: "none",
+                  },
+              },
+              viewerProtocolPolicy: "allow-all",
+              minTtl: 0,
+              defaultTtl: 3600,
+              maxTtl: 86400,
+          },
+          enabled: true,
+          viewerCertificate: {
+            cloudfrontDefaultCertificate: true
+          },
           origins: [
             {
               domainName: this.bucket.bucketDomainName,
@@ -88,5 +133,6 @@ export class CloudfrontS3 extends pulumi.ComponentResource {
           }`
         })
 
+        this.domainName = this.cloudfrontWebDistribution.domainName;
     }
 }
